@@ -1,0 +1,24 @@
+<!--#include virtual="/template/header.html" -->
+
+<p>
+  UNIX manual pages for projects by <a href="https://github.com/troglobit">Troglobit Software</a>
+</p>
+
+<ul>
+  <li>
+    <a href="https://man.troglobit.com/man1/index.html">1: <em>User commands</em></a>
+  </li>
+  <li>
+    <a href="https://man.troglobit.com/man3/index.html">3: <em>Library functions</em></a>
+  </li>
+  <li>
+    <a href="https://man.troglobit.com/man5/index.html">5: <em>Files</em></a>;
+    describes various file formats
+  </li>
+  <li>
+    <a href="https://man.troglobit.com/man8/index.html">8:
+      <em>Superuser and system administration commands</em></a>
+  </li>
+</ul>
+
+<!--#include virtual="/template/footer.html" -->
