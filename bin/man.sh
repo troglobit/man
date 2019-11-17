@@ -3,8 +3,8 @@
 
 GEN=`which mandoc`
 TOP=`git rev-parse --show-toplevel`
-HEAD=$TOP/header.html
-FOOT=$TOP/footer.html
+HEAD=$TOP/template/header.html
+FOOT=$TOP/template/footer.html
 
 for file in `ls $TOP/man[1358]/*.[1358]`; do
     name=`basename $file`
