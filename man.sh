@@ -3,11 +3,13 @@
 
 GEN=`which mandoc`
 TOP=`git rev-parse --show-toplevel`
-HEAD=$TOP/www/header.html
-FOOT=$TOP/www/footer.html
-for file in `ls $TOP/man/*.[158]`; do
+HEAD=$TOP/header.html
+FOOT=$TOP/footer.html
+
+for file in `ls $TOP/man[1358]/*.[1358]`; do
     name=`basename $file`
-    web=$TOP/www/$name.html
+    dir=$(basename `dirname $file`)
+    web=$TOP/$dir/$name.html
     echo "Updating $web ..."
     cat $HEAD                        >  $web
     mandoc -T html -O fragment $file >> $web
