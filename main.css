@@ -78,7 +78,7 @@ code.Cd { font-weight: bold; font-family: inherit; }
 @media screen and (max-width: 1023px) {
     #wrapper {
 	/* width:      70%; */
-	width: 90ch,
+	width: 90ch;
 	text-align: left;
 
 	padding:  0.5em;
@@ -96,7 +96,7 @@ code.Cd { font-weight: bold; font-family: inherit; }
 @media screen and (min-width: 1024px) {
     #wrapper {
 	/* width:      50%; */
-	width: 90ch,
+	width: 90ch;
 	text-align: left;
 
 	position: absolute;
