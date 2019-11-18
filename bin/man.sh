@@ -23,8 +23,12 @@ for dir in `find $TOP/man[1358] -type d`; do
 
     echo "Creating $dir/index.html ..."
     cat $HEAD                        >   index.html
+    echo "<h1>Manual Pages: section $section</h1>"
     echo "<ul>"                      >>  index.html
     for file in `find . -name '*.html'`; do
+	if [ "$file" = "index.html" ]; then
+	    continue
+	fi
 	man=`basename $file .html`
 	url=`basename $file`
 	echo "<li><a href=\"$url\">$man</a></li>" >> index.html
