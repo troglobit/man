@@ -26,11 +26,11 @@ for dir in `find $TOP/man[1358] -type d`; do
     echo "<h1>Manual Pages: section $section</h1>" >> index.html
     echo "<ul>"                      >>  index.html
     for file in `find . -name '*.html'`; do
-	if [ "$file" = "index.html" ]; then
-	    continue
-	fi
 	man=`basename $file .html`
 	url=`basename $file`
+	if [ "$man" = "index" ]; then
+	    continue
+	fi
 	echo "<li><a href=\"$url\">$man</a></li>" >> index.html
     done
     echo "</ul>"                     >>  index.html
