@@ -5,6 +5,7 @@ fetch:
 	./bin/fetch.sh
 
 build:
+	cp -a ext/* .
 	./bin/man.sh
 
 clean:
