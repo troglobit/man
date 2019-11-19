@@ -36,6 +36,7 @@ repo mrouted man mrouted.8 mroutectl.8 mtrace.8 mrinfo.8 map-mbone.8 mrouted.con
 repo nemesis man nemesis.1 nemesis-dns.1 nemesis-igmp.1 nemesis-rip.1 nemesis-arp.1 \
      nemesis-ethernet.1 nemesis-ip.1 nemesis-tcp.1 nemesis-dhcp.1 nemesis-icmp.1 \
      nemesis-ospf.1 nemesis-udp.1
+repo omping . omping.8
 repo pim6sd man pim6sd.8 pim6sd.conf.5 pim6stat.1
 repo pimd man pimd.8 pimctl.8
 repo redir . redir.1
