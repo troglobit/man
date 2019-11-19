@@ -17,7 +17,7 @@ for file in `ls $TOP/man[1358]/*.[1358]`; do
     sed -i "s/%TITLE%/$name/"           $web
 done
 
-for dir in `find $TOP/man[1358] -type d`; do
+for dir in `find $TOP/man[12358] -type d`; do
     cd $dir
     section=`basename $dir | cut -c 4`
 
