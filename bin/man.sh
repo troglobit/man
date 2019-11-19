@@ -6,7 +6,7 @@ TOP=`git rev-parse --show-toplevel`
 HEAD=$TOP/template/header.html
 FOOT=$TOP/template/footer.html
 
-for file in `ls $TOP/man[1358]/*.[1358]`; do
+for file in `ls $TOP/man[12358]/*.[12358]`; do
     name=`basename $file`
     dir=$(basename `dirname $file`)
     web=$TOP/$dir/$name.html
