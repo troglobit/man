@@ -25,7 +25,7 @@ for dir in `find $TOP/man[1358] -type d`; do
     cat $HEAD                        >   index.html
     echo "<h1>Manual Pages: section $section</h1>" >> index.html
     echo "<ul>"                      >>  index.html
-    for file in `find . -name '*.html'`; do
+    for file in `find . -name '*.html' |sort`; do
 	man=`basename $file .html`
 	url=`basename $file`
 	if [ "$man" = "index" ]; then
