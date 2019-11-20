@@ -32,7 +32,8 @@ for dir in `find $TOP/man[12358] -type d`; do
 	fi
 	man=`basename $nm .$section`
 	url=`basename $file`
-	echo ".It Lk $url $man($section)" >> index.man
+	echo ".It" >> index.man
+	echo ".Lk $url $man($section)" >> index.man
     done
     cat $MFOOT >> index.man
     sed -i "s/%TITLE%/Section $section: User commands/" index.man
