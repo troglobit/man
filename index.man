@@ -1,15 +1,18 @@
 .Dd $Mdocdate$
 .Dt index 1 USD
-.Os "Joachim Nilsson (c) 2019"
+.Os "Troglobit Software"
 .Sh NAME
 .Nm index
-.Nd Troglobit man-pages
+.Nd UNIX manual pages for projects by Joachim Nilsson, @troglobit.
 .Sh DESCRIPTION
-UNIX manual pages for projects by
-.Lk https://github.com/troglobit Troglobit Software .
 .Bl -tag -width Lk -offset indent
 .It Lk /man1/index.html 1: User commands
 .It Lk /man3/index.html 3: Library functions
 .It Lk /man5/index.html 5: Files No ; describes file formats used
 .It Lk /man8/index.html 8: Superuser and system administration commands
 .El
+.Sh SEE ALSO
+.Lk https://troglobit.com Troglobit Software
+.Lk https://github.com/troglobit GitHub
+.Sh AUTHOR
+.An Joachim Nilsson Aq Mt troglobit@gmail.com
