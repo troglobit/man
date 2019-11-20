@@ -25,21 +25,27 @@ for dir in `find $TOP/man[12358] -type d`; do
     case $section in
 	1)
 	    sn="User commands"
+	    vol="USR"
 	    ;;
 	2)
 	    sn="System calls"
+	    vol="KM"
 	    ;;
 	3)
 	    sn="Library functions"
+	    vol="PS1"
 	    ;;
 	5)
 	    sn="File formats and conventions"
+	    vol="SMM"
 	    ;;
 	8)
 	    sn="Superuser and system administration commands"
+	    vol="SMM"
 	    ;;
 	*)
 	    sn=""
+	    vol="LOCAL"
 	    ;;
     esac
     echo "Creating $dir/index.man"
@@ -55,7 +61,8 @@ for dir in `find $TOP/man[12358] -type d`; do
 	echo ".Lk $url $man($section)" >> index.man
     done
     cat $MFOOT >> index.man
-    sed -i "s/%TITLE%/Section $section: $sn/" index.man
+    sed -i "s/%TITLE%/Section $section $vol/" index.man
+    sed -i "s/%DESC%/Section $section: $sn/" index.man
 
     echo "Creating $dir/index.html ..."
     cat $HEAD                        >   index.html

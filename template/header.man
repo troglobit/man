@@ -4,5 +4,5 @@
 .Sh NAME
 .Nm index
 .Nd UNIX manual pages
-.Sh DESCRIPTION
+.Sh %DESC%
 .Bl -bullet -offset indent -compact
