@@ -5,6 +5,8 @@ GEN=`which mandoc`
 TOP=`git rev-parse --show-toplevel`
 HEAD=$TOP/template/header.html
 FOOT=$TOP/template/footer.html
+MHEAD=$TOP/template/header.man
+MFOOT=$TOP/template/footer.man
 
 for file in `ls $TOP/man[12358]/*.[12358]` index.man; do
     name=`basename $file .man`
@@ -21,19 +23,23 @@ for dir in `find $TOP/man[12358] -type d`; do
     cd $dir
     section=`basename $dir | cut -c 4`
 
-    echo "Creating $dir/index.html ..."
-    cat $HEAD                        >   index.html
-    echo "<h1>Manual Pages: section $section</h1>" >> index.html
-    echo "<ul>"                      >>  index.html
+    echo "Creating $dir/index.man"
+    cat $MHEAD > index.man
     for file in `find . -name '*.html' |sort`; do
-	man=`basename $file .html`
-	url=`basename $file`
-	if [ "$man" = "index" ]; then
+	nm=`basename $file .html`
+	if [ "$nm" = "index" ]; then
 	    continue
 	fi
-	echo "<li><a href=\"$url\">$man</a></li>" >> index.html
+	man=`basename $nm .$section`
+	url=`basename $file`
+	echo ".It Lk $url $man($section)" >> index.man
     done
-    echo "</ul>"                     >>  index.html
+    cat $MFOOT >> index.man
+    sed -i "s/%TITLE%/Section $section: User commands/" index.man
+
+    echo "Creating $dir/index.html ..."
+    cat $HEAD                        >   index.html
+    mandoc -T html -O fragment index.man >> index.html
     cat $FOOT                        >>  index.html
     sed -i "s/%TITLE%/Section $section/" index.html
 done

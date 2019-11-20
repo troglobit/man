@@ -1,0 +1,10 @@
+.El
+.Sh SEE ALSO
+.Bl -bullet -compact
+.It
+.Lk https://troglobit.com Troglobit Software
+.It
+.Lk https://github.com/troglobit GitHub
+.El
+.Sh AUTHOR
+.An Joachim Nilsson Aq Mt troglobit()gmail!com
