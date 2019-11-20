@@ -1,0 +1,12 @@
+.Dd Nov 20, 2019
+.Dt index 1
+.Sh Manual Pages
+UNIX manual pages for projects by
+.Lk https://github.com/troglobit Troglobit Software .
+.Bl -tag -width Lk
+.Li Lk /man1/index.html 1: Em User commands
+.Li Lk /man3/index.html 3: Em Library functions
+.Li Lk /man5/index.html 5: Em Files;
+describes file formats used
+.Li Lk /man8/index.html 8: Em Superuser and system administration commands
+.El

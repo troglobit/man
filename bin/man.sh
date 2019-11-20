@@ -6,8 +6,8 @@ TOP=`git rev-parse --show-toplevel`
 HEAD=$TOP/template/header.html
 FOOT=$TOP/template/footer.html
 
-for file in `ls $TOP/man[12358]/*.[12358]`; do
-    name=`basename $file`
+for file in `ls $TOP/man[12358]/*.[12358]` index.man; do
+    name=`basename $file .man`
     dir=$(basename `dirname $file`)
     web=$TOP/$dir/$name.html
     echo "Updating $web ..."
