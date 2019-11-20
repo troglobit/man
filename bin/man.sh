@@ -22,7 +22,26 @@ done
 for dir in `find $TOP/man[12358] -type d`; do
     cd $dir
     section=`basename $dir | cut -c 4`
-
+    case $section in
+	1)
+	    sn="User commands"
+	    ;;
+	2)
+	    sn="System calls"
+	    ;;
+	3)
+	    sn="Library functions"
+	    ;;
+	5)
+	    sn="File formats and conventions"
+	    ;;
+	8)
+	    sn="Superuser and system administration commands"
+	    ;;
+	*)
+	    sn=""
+	    ;;
+    esac
     echo "Creating $dir/index.man"
     cat $MHEAD > index.man
     for file in `find . -name '*.html' |sort`; do
@@ -36,7 +55,7 @@ for dir in `find $TOP/man[12358] -type d`; do
 	echo ".Lk $url $man($section)" >> index.man
     done
     cat $MFOOT >> index.man
-    sed -i "s/%TITLE%/Section $section: User commands/" index.man
+    sed -i "s/%TITLE%/Section $section: $sn/" index.man
 
     echo "Creating $dir/index.html ..."
     cat $HEAD                        >   index.html
