@@ -3,7 +3,7 @@
 .Os "Troglobit Software"
 .Sh NAME
 .Nm index
-.Nd UNIX manual pages.
+.Nd UNIX manual pages
 .Sh DESCRIPTION
 .Bl -tag -width Lk -offset indent
 .It Lk /man1/index.html 1: User commands
