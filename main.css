@@ -4,6 +4,12 @@ body {
     /* font-size: 110%; */   /* flexible baseline */
     /* line-height: 1.2; */
     text-align: center; /*For IE6 Shenanigans*/
+
+    background-image: url('UNIX.svg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top left;
+    background-size: 25%;
 }
 
 h1 {
@@ -75,6 +81,9 @@ span.Ms { font-weight: bold; }
 dl.Bl-diag > dt { font-weight: bold; }
 code.Nm, code.Fl, code.Cm, code.Ic, code.In, code.Fd, code.Fn,
 code.Cd { font-weight: bold; font-family: inherit; }
+
+#wrapper {
+}
 
 @media screen and (max-width: 1023px) {
     #wrapper {
