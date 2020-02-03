@@ -31,7 +31,7 @@ repo inadyn man inadyn.8 inadyn.conf.5
 repo mcjoin . mcjoin.1
 repo merecat man merecat.8 merecat.conf.5 redirect.8 ssi.8 htpasswd.1
 repo mg . mg.1
-repo mini-snmpd . mini_snmpd.8
+repo mini-snmpd . mini-snmpd.8
 repo mrouted man mrouted.8 mroutectl.8 mtrace.8 mrinfo.8 map-mbone.8 mrouted.conf.5
 repo nemesis man nemesis.1 nemesis-dns.1 nemesis-igmp.1 nemesis-rip.1 nemesis-arp.1 \
      nemesis-ethernet.1 nemesis-ip.1 nemesis-tcp.1 nemesis-dhcp.1 nemesis-icmp.1 \
