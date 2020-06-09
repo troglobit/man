@@ -1,8 +1,9 @@
+REPORC = $(shell pwd)/reporc
 
 all: fetch build
 
 fetch:
-	./bin/fetch.sh
+	./bin/fetch.sh $(REPORC)
 
 build:
 	cp -a ext/* .
