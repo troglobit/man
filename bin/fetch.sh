@@ -41,7 +41,7 @@ repo pimd man pimd.8 pimctl.8
 repo redir . redir.1
 repo smcroute . smcroute.8
 repo ssdp-responder man ssdpd.8 ssdp-scan.1
-repo sysklogd man klogd.8 syslogd.8 syslogp.3 syslog.conf.5 logger.1
+repo sysklogd man syslogd.8 syslogp.3 syslog.conf.5 logger.1
 repo uftpd man uftpd.8
 repo uredir . uredir.1
 repo watchdogd man watchdogd.8 watchdogctl.1 watchdogd.conf.5
