@@ -1,12 +1,17 @@
-#!/bin/sh -e
+#!/bin/sh
 # Generates HTML versions of man pages using mandoc
 
-GEN=`which mandoc`
+GEN=`command -v mandoc`
 TOP=`git rev-parse --show-toplevel`
 HEAD=$TOP/template/header.html
 FOOT=$TOP/template/footer.html
 MHEAD=$TOP/template/header.man
 MFOOT=$TOP/template/footer.man
+
+if [ -z "$GEN" ]; then
+	echo "Missing mandoc tools, try: sudo apt install mandoc"
+	exit 1
+fi
 
 for file in `ls $TOP/man[12358]/*.[12358]` index.man; do
     name=`basename $file .man`
