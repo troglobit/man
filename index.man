@@ -17,4 +17,4 @@
 .Lk https://archive.org/details/UNIXManRel5 UNIX System V User's Manual
 .El
 .Sh AUTHOR
-.An Joachim Nilsson Aq Mt troglobit()gmail!com
+.An Joachim Wiberg Aq Mt troglobit()gmail!com

@@ -7,4 +7,4 @@
 .Lk https://github.com/troglobit GitHub
 .El
 .Sh AUTHOR
-.An Joachim Nilsson Aq Mt troglobit()gmail!com
+.An Joachim Wiberg Aq Mt troglobit()gmail!com
