@@ -13,7 +13,7 @@ repo nemesis man nemesis.1 nemesis-dns.1 nemesis-igmp.1 nemesis-rip.1 nemesis-ar
      nemesis-ospf.1 nemesis-udp.1
 repo pim6sd man pim6sd.8 pim6sd.conf.5 pim6stat.1
 repo pimd man pimd.8 pimctl.8 pimd.conf.5
-repo pimdd man pimdd.8 pimdd.conf.5
+repo pimd-dense man pimdd.8 pimdd.conf.5
 repo redir . redir.1
 repo smcroute man smcrouted.8 smcroutectl.8 smcroute.conf.5
 repo ssdp-responder man ssdpd.8 ssdp-scan.1
