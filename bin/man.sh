@@ -19,7 +19,7 @@ for file in `ls $TOP/man[12358]/*.[12358]` index.man; do
     web=$TOP/$dir/$name.html
     echo "Updating $web ..."
     cat $HEAD                        >  $web
-    mandoc -T html -O fragment -O man="../man%S/%N.%S.html" $file >> $web
+    mandoc -T html -O "fragment,man=../man%S/%N.%S.html" $file >> $web
     cat $FOOT                        >> $web
     sed -i "s/%TITLE%/$name/"           $web
 done
