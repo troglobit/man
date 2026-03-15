@@ -1,11 +1,11 @@
 REPORC = $(shell pwd)/reporc
 
-all: fetch build
+all: build
 
 fetch:
 	./bin/fetch.sh $(REPORC)
 
-build:
+build: fetch
 	cp -a ext/* .
 	./bin/man.sh
 
