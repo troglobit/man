@@ -1,6 +1,6 @@
 repo backlight . backlight.1
 repo editline man editline.3
-repo finit man finit.8 finit.conf.5 initctl.8
+repo finit-project/finit man finit.8 finit.conf.5 initctl.8
 repo inadyn man inadyn.8 inadyn.conf.5
 repo mcjoin . mcjoin.1
 repo merecat man merecat.8 merecat.conf.5 redirect.8 ssi.8 htpasswd.1

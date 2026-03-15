@@ -11,25 +11,37 @@ fi
 fetch()
 {
     subd=$1
-    proj=$2
-    path=$3
-    file=$4
+    org=$2
+    proj=$3
+    path=$4
+    file=$5
 
     mkdir -p $subd
-    wget -nv -O $subd/$file https://raw.githubusercontent.com/troglobit/$proj/master/$path/$file &
+    wget -nv -O $subd/$file https://raw.githubusercontent.com/$org/$proj/master/$path/$file &
 }
 
 repo()
 {
-    proj=$1
+    arg=$1
     path=$2
     shift 2
 
-    echo "Fetching man pages from $proj ..."
+    case "$arg" in
+	*/*)
+	    org="${arg%%/*}"
+	    proj="${arg##*/}"
+	    ;;
+	*)
+	    org="troglobit"
+	    proj="$arg"
+	    ;;
+    esac
+
+    echo "Fetching man pages from $org/$proj ..."
 
     for file in $*; do
 	subd=man"${file##*.}"
-	fetch $subd $proj $path $file
+	fetch $subd $org $proj $path $file
     done
 }
 
