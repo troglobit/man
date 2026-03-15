@@ -12,7 +12,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --body-bg: #1a1d21;
     --body-color: #c0c8c0;
     --wrapper-bg: #22262c;
@@ -24,6 +24,19 @@
     --code-bg: #1a1d21;
     --accent: #5a9bc0;
   }
+}
+
+:root[data-theme="dark"] {
+  --body-bg: #1a1d21;
+  --body-color: #c0c8c0;
+  --wrapper-bg: #22262c;
+  --wrapper-border: #2e333a;
+  --wrapper-shadow: rgba(0, 0, 0, 0.4);
+  --desc-color: #6a7370;
+  --line-color: #2e333a;
+  --link-color: #7db8d8;
+  --code-bg: #1a1d21;
+  --accent: #5a9bc0;
 }
 
 body {
@@ -153,6 +166,7 @@ code.Cd { font-weight: bold; font-family: inherit; }
 }
 
 #wrapper {
+    position: relative;
     width: min(80ch, calc(100% - 2em));
     text-align: left;
     padding: 1.5em 2em;
@@ -163,7 +177,7 @@ code.Cd { font-weight: bold; font-family: inherit; }
     box-shadow: 0 2px 16px var(--wrapper-shadow);
 }
 
-body::before {
+#wrapper::before {
     content: '';
     position: fixed;
     top: 5em;
@@ -175,14 +189,60 @@ body::before {
     background-size: contain;
     opacity: 0.06;
     pointer-events: none;
+    z-index: 0;
 }
 
 @media (prefers-color-scheme: dark) {
-    body::before {
+    :root:not([data-theme="light"]) #wrapper::before {
         filter: brightness(4);
         opacity: 0.08;
     }
 }
+
+:root[data-theme="dark"] #wrapper::before {
+    filter: brightness(4);
+    opacity: 0.08;
+}
+
+#wrapper > * {
+    position: relative;
+    z-index: 1;
+}
+
+#theme-toggle {
+    position: absolute;
+    top: 0.75em;
+    right: 0.75em;
+    background: none;
+    border: 1px solid var(--wrapper-border);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--desc-color);
+    padding: 0.3em;
+    line-height: 0;
+}
+
+#theme-toggle:hover {
+    color: var(--body-color);
+    border-color: var(--accent);
+}
+
+#theme-toggle svg {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+/* Light mode: show moon (click to go dark) */
+.icon-sun  { display: none; }
+.icon-moon { display: block; }
+
+/* Dark mode: show sun (click to go light) */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .icon-sun  { display: block; }
+    :root:not([data-theme="light"]) .icon-moon { display: none; }
+}
+:root[data-theme="dark"] .icon-sun  { display: block; }
+:root[data-theme="dark"] .icon-moon { display: none; }
 
 #right {
     float: right;
