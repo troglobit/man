@@ -6,10 +6,10 @@
 .Nd UNIX manual pages
 .Sh DESCRIPTION
 .Bl -tag -width Lk -offset indent
-.It Lk /man1/index.html 1: User commands
-.It Lk /man3/index.html 3: Library functions
-.It Lk /man5/index.html 5: File formats and conventions
-.It Lk /man8/index.html 8: Superuser and system administration commands
+.It Lk man1/index.html 1: User commands
+.It Lk man3/index.html 3: Library functions
+.It Lk man5/index.html 5: File formats and conventions
+.It Lk man8/index.html 8: Superuser and system administration commands
 .El
 .Sh SEE ALSO
 .Bl -bullet -compact

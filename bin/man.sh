@@ -17,11 +17,17 @@ for file in `ls $TOP/man[12358]/*.[12358]` index.man; do
     name=`basename $file .man`
     dir=$(basename `dirname $file`)
     web=$TOP/$dir/$name.html
+    if [ "$dir" = "." ]; then
+	prefix=""
+    else
+	prefix="../"
+    fi
     echo "Updating $web ..."
     cat $HEAD                        >  $web
     mandoc -T html -O "fragment,man=../man%S/%N.%S.html" $file >> $web
     cat $FOOT                        >> $web
     sed -i "s/%TITLE%/$name/"           $web
+    sed -i "s|%PREFIX%|$prefix|g"       $web
 done
 
 for dir in `find $TOP/man[12358] -type d`; do
@@ -74,4 +80,5 @@ for dir in `find $TOP/man[12358] -type d`; do
     mandoc -T html -O fragment index.man >> index.html
     cat $FOOT                        >>  index.html
     sed -i "s/%TITLE%/Section $section/" index.html
+    sed -i "s|%PREFIX%|../|g"            index.html
 done
