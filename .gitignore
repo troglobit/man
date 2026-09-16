@@ -1,8 +1,10 @@
 *~
 /.manifest
-index.html
+/404.html
+/index.html
+/robots.txt
+/sitemap.xml
 /man1/
-/man2/*.man
 /man2/*.html
 /man3/
 /man5/

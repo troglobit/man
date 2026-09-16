@@ -1,255 +1,495 @@
+/*
+ * man.troglobit.com
+ *
+ * Ink on paper: one flat background, hairline rules for structure, and a
+ * single hue per manual section as the only chroma on the page.
+ */
+
 :root {
-  --body-bg: #f0eeec;
-  --body-color: #333;
-  --wrapper-bg: #fff;
-  --wrapper-border: #d0ccc8;
-  --wrapper-shadow: rgba(0, 0, 0, 0.1);
-  --desc-color: #999;
-  --line-color: #e8e4e0;
-  --link-color: #2a6496;
-  --code-bg: #f5f3f1;
-  --accent: #4a7c9e;
+    color-scheme: light dark;
+
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
+            "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+            Consolas, "Liberation Mono", monospace;
+
+    --paper:   light-dark(#fbfaf7, #15171a);
+    --ink:     light-dark(#23272c, #ccd2d9);
+    --ink-dim: light-dark(#6d7480, #868f9a);
+    --rule:    light-dark(#e0dcd4, #2a2f35);
+    --rule-hi: light-dark(#cbc5b9, #3a4149);
+    --wash:    light-dark(#f2efe8, #1d2126);
+    --link:    light-dark(#1f5c9c, #7cb4e6);
+
+    /* Manual sections.  Also the colour key in the top bar. */
+    --sec-1: light-dark(#3a55a8, #8c9ff0);
+    --sec-2: light-dark(#0f6f74, #4fc3c9);
+    --sec-3: light-dark(#7a4497, #c08fe0);
+    --sec-5: light-dark(#8f5a10, #e0a24e);
+    --sec-8: light-dark(#a53a4c, #ef8a99);
+    --sec: var(--ink-dim);
+
+    --measure: 74ch;
+    --rail: 13rem;
+    --gutter: 3rem;
+    /* Top bar, page and footer all line up on this band. */
+    --band: calc(var(--rail) + var(--gutter) + var(--measure));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --body-bg: #1a1d21;
-    --body-color: #c0c8c0;
-    --wrapper-bg: #22262c;
-    --wrapper-border: #2e333a;
-    --wrapper-shadow: rgba(0, 0, 0, 0.4);
-    --desc-color: #6a7370;
-    --line-color: #2e333a;
-    --link-color: #7db8d8;
-    --code-bg: #1a1d21;
-    --accent: #5a9bc0;
-  }
-}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark;  }
 
-:root[data-theme="dark"] {
-  --body-bg: #1a1d21;
-  --body-color: #c0c8c0;
-  --wrapper-bg: #22262c;
-  --wrapper-border: #2e333a;
-  --wrapper-shadow: rgba(0, 0, 0, 0.4);
-  --desc-color: #6a7370;
-  --line-color: #2e333a;
-  --link-color: #7db8d8;
-  --code-bg: #1a1d21;
-  --accent: #5a9bc0;
-}
+:root[data-section="1"] { --sec: var(--sec-1); }
+:root[data-section="2"] { --sec: var(--sec-2); }
+:root[data-section="3"] { --sec: var(--sec-3); }
+:root[data-section="5"] { --sec: var(--sec-5); }
+:root[data-section="8"] { --sec: var(--sec-8); }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
 
 body {
-    background-color: var(--body-bg);
-    color: var(--body-color);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    text-align: center;
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
 }
 
-h1 {
-    font-size: 1.5em;
-    font-weight: 600;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 0.3em;
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+:focus-visible {
+    outline: 2px solid var(--sec);
+    outline-offset: 2px;
+    border-radius: 1px;
 }
 
-h2 {
-    font-size: 1.1em;
-    font-weight: 600;
-    border-bottom: 1px solid var(--line-color);
-    padding-bottom: 0.2em;
+.skip {
+    position: absolute;
+    left: -100vw;
+}
+.skip:focus {
+    left: .5rem;
+    top: .5rem;
+    z-index: 30;
+    background: var(--paper);
+    padding: .5rem .75rem;
+    border: 1px solid var(--sec);
 }
 
-a {
-    text-decoration: none;
-    color: var(--link-color);
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-p {
-    text-align: justify;
-}
-
-pre {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.875em;
-    background: var(--code-bg);
-    padding: 1em 1.2em;
-    border-radius: 4px;
-    border-left: 3px solid var(--accent);
-    overflow-x: auto;
-    line-height: 1.45;
-}
-
-code {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.9em;
-}
-
-address {
-    border-top: 1px solid var(--line-color);
-    margin-top: 1.5em;
-    padding-top: 0.75em;
-    color: var(--desc-color);
-    font-style: normal;
-    font-size: 0.9em;
-}
-
-img {
-    display: block;
-    margin: 0 auto;
-    border-radius: 8px;
-    border: 1px solid var(--desc-color);
-}
-
-dt {
-    margin-top: 0.5em;
-}
-
-dl.config dt {
-    font-family: monospace;
-}
-
-dl.config dd {
-    text-align: justify;
-}
-
-#header {
-    text-align: center;
-}
-
-#footer {
-    text-align: center;
-    clear: both;
-}
-
-/* Man pages */
-table.head, table.foot { width: 100%; }
-table.head {
-    border-bottom: 1px solid var(--line-color);
-    margin-bottom: 1.5em;
-    font-size: 0.85em;
-    color: var(--desc-color);
-}
-table.foot {
-    margin-top: 2em;
-    border-top: 1px solid var(--line-color);
-    font-size: 0.85em;
-    color: var(--desc-color);
-}
-td.head-rtitle, td.foot-os { text-align: right; }
-td.head-vol { text-align: center; }
-.Nm > tbody > tr > td { vertical-align: text-top; }
-div.Pp { margin: 1ex 0ex; }
-div.Nd, div.Bf, div.Op { display: inline; }
-span.Pa, span.Ad { font-style: italic; }
-span.Ms { font-weight: bold; }
-dl.Bl-diag > dt { font-weight: bold; }
-code.Nm, code.Fl, code.Cm, code.Ic, code.In, code.Fd, code.Fn,
-code.Cd { font-weight: bold; font-family: inherit; }
-
-.Sh > h1 {
-    font-size: 0.9em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    border-bottom: 1px solid var(--line-color);
-    border-left: none;
-    padding: 0.2em 0;
-    color: var(--body-color);
-    margin-top: 1.5em;
-}
-
-#wrapper {
-    position: relative;
-    width: min(80ch, calc(100% - 2em));
-    text-align: left;
-    padding: 1.5em 2em;
-    margin: 1.5em auto;
-    border-radius: 8px;
-    border: 1px solid var(--wrapper-border);
-    background: var(--wrapper-bg);
-    box-shadow: 0 2px 16px var(--wrapper-shadow);
-}
-
-#wrapper::before {
-    content: '';
-    position: fixed;
-    top: 5em;
-    right: calc(50% - 38ch);
-    width: 22ch;
-    height: 22ch;
-    background-image: url('UNIX.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.06;
-    pointer-events: none;
-    z-index: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) #wrapper::before {
-        filter: brightness(4);
-        opacity: 0.08;
+/*
+ * The UNIX mark, kept out in the margin where it cannot crowd the text, and
+ * masked rather than filtered so it takes the ink colour in either theme.
+ * Only drawn once there is margin to spare.
+ */
+@media (min-width: 76rem) {
+    body::before {
+        content: "";
+        position: fixed;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: min(26ch, 50vw - var(--band) / 2 - 3rem);
+        aspect-ratio: 1;
+        background: light-dark(rgba(35, 39, 44, .05), rgba(204, 210, 217, .07));
+        -webkit-mask: url("UNIX.svg") no-repeat center / contain;
+        mask: url("UNIX.svg") no-repeat center / contain;
+        pointer-events: none;
     }
 }
 
-:root[data-theme="dark"] #wrapper::before {
-    filter: brightness(4);
-    opacity: 0.08;
+/* ------------------------------------------------------------------ top bar */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: .55rem;
+    padding-inline: max(1rem, (100% - var(--band)) / 2);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
 }
 
-#wrapper > * {
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    color: var(--ink);
+    font-size: .95rem;
+    white-space: nowrap;
+}
+.brand:hover { text-decoration: none; }
+.brand svg { width: 1.15rem; height: 1.15rem; color: var(--sec); }
+.brand b { font-weight: 600; }
+.brand span { color: var(--ink-dim); font-weight: 400; }
+
+.sections {
+    display: flex;
+    gap: .1rem;
+    font-family: var(--mono);
+    font-size: .8rem;
+    margin-left: auto;
+}
+.sections a {
+    display: block;
+    width: 1.7rem;
+    line-height: 1.7rem;
+    text-align: center;
+    color: var(--ink-dim);
+}
+.sections a:hover { text-decoration: none; background: var(--wash); }
+.sections a[data-s="1"]:hover { color: var(--sec-1); }
+.sections a[data-s="2"]:hover { color: var(--sec-2); }
+.sections a[data-s="3"]:hover { color: var(--sec-3); }
+.sections a[data-s="5"]:hover { color: var(--sec-5); }
+.sections a[data-s="8"]:hover { color: var(--sec-8); }
+
+/* The section you are in is lit in its own hue. */
+:root[data-section="1"] .sections a[data-s="1"],
+:root[data-section="2"] .sections a[data-s="2"],
+:root[data-section="3"] .sections a[data-s="3"],
+:root[data-section="5"] .sections a[data-s="5"],
+:root[data-section="8"] .sections a[data-s="8"] {
+    color: var(--sec);
+    box-shadow: inset 0 -2px 0 currentColor;
+    font-weight: 600;
+}
+
+.theme {
+    display: flex;
+    background: none;
+    border: 0;
+    padding: .3rem;
+    color: var(--ink-dim);
+    cursor: pointer;
+}
+.theme:hover { color: var(--sec); }
+.theme svg { width: 1.05rem; height: 1.05rem; }
+
+/* One glyph per mode: half circle follows the system, sun is light, moon is
+ * dark.  The half circle is also what shows if the script never runs. */
+.theme svg { display: none; }
+.theme .i-auto,
+:root[data-theme="auto"] .theme .i-auto   { display: block; }
+:root[data-theme="light"] .theme .i-auto  { display: none;  }
+:root[data-theme="light"] .theme .i-light { display: block; }
+:root[data-theme="dark"] .theme .i-auto   { display: none;  }
+:root[data-theme="dark"] .theme .i-dark   { display: block; }
+
+/* ------------------------------------------------------------------- layout */
+
+.sheet {
+    display: grid;
+    grid-template-areas: "crumbs" "toc" "page";
+    grid-template-columns: minmax(0, 1fr);
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+@media (min-width: 62rem) {
+    .sheet {
+        grid-template-areas: ". crumbs" "toc page";
+        grid-template-columns: var(--rail) minmax(0, var(--measure));
+        column-gap: var(--gutter);
+        max-width: var(--band);
+        justify-content: start;
+        padding-inline: 0;
+        padding-top: 2rem;
+    }
+
+    /* Front page, section indexes and 404: no rail, so no rail column. */
+    .sheet.plain {
+        grid-template-areas: "crumbs" "page";
+        grid-template-columns: minmax(0, var(--measure));
+    }
+}
+
+.crumbs {
+    grid-area: crumbs;
+    font-family: var(--mono);
+    font-size: .76rem;
+    color: var(--ink-dim);
+    margin-bottom: 1.1rem;
+}
+.crumbs a { color: var(--ink-dim); }
+.crumbs a:hover { color: var(--sec); }
+.crumbs .sep { padding: 0 .4rem; color: var(--rule-hi); }
+.crumbs b { color: var(--ink); font-weight: 600; }
+
+.page { grid-area: page; min-width: 0; }
+
+/* --------------------------------------------------------------------- toc */
+
+.toc { grid-area: toc; }
+
+.toc summary {
+    font-family: var(--mono);
+    font-size: .76rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    cursor: pointer;
+    padding: .4rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+}
+.toc ol {
+    list-style: none;
+    margin: .5rem 0 1.5rem;
+    padding: 0;
+    font-size: .82rem;
+    /* Narrow screens: a strip, not half the screen.  The rail below undoes it. */
+    max-height: 11rem;
+    overflow-y: auto;
+}
+.toc li { margin: 0; }
+.toc a {
+    display: block;
+    padding: .18rem 0 .18rem .7rem;
+    color: var(--ink-dim);
+    border-left: 2px solid var(--rule);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.toc a:hover { color: var(--ink); text-decoration: none; border-left-color: var(--rule-hi); }
+.toc a[aria-current] { color: var(--sec); border-left-color: var(--sec); }
+
+@media (min-width: 62rem) {
+    .toc {
+        position: sticky;
+        top: 4rem;
+        align-self: start;
+        max-height: calc(100vh - 6rem);
+        overflow-y: auto;
+    }
+    .toc summary { display: none; }
+    .toc ol { margin-top: 0; max-height: none; overflow: visible; }
+}
+
+/* ---------------------------------------------------------- the manual page */
+
+/*
+ * The running head is the one thing on the web that looks like nothing but a
+ * manual page.  It carries the section colour and everything else stays quiet.
+ */
+table.head, table.foot {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--sec);
+}
+table.head {
+    border-top: 2px solid var(--sec);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+}
+table.head td { padding: .4rem 0; }
+table.foot {
+    border-top: 1px solid var(--rule);
+    margin-top: 3rem;
+    color: var(--ink-dim);
+}
+table.foot td { padding: .4rem 0; }
+td.head-rtitle, td.foot-os { text-align: right; }
+td.head-vol { text-align: center; color: var(--ink-dim); }
+
+h1.Sh, h2.Ss {
+    font-family: var(--mono);
+    letter-spacing: .05em;
+    scroll-margin-top: 4.5rem;
+}
+h1.Sh {
+    font-size: .82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 2.4rem 0 .8rem;
+    padding-bottom: .35rem;
+    border-bottom: 1px solid var(--rule);
+}
+h2.Ss {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 1.8rem 0 .6rem;
+}
+.Sh:first-of-type h1.Sh { margin-top: 0; }
+
+a.permalink { color: inherit; }
+a.permalink:hover { text-decoration: none; color: var(--sec); }
+h1.Sh:hover a.permalink::after, h2.Ss:hover a.permalink::after {
+    content: "#";
+    color: var(--rule-hi);
+    padding-left: .5ch;
+}
+
+p { margin: 0 0 1rem; }
+div.Pp { margin: 1rem 0; }
+div.Nd, div.Bf, div.Op { display: inline; }
+
+/* Anything the manual marks up as a literal is set in the monospace face. */
+code, var, samp, kbd, span.Pa, span.Ad {
+    font-family: var(--mono);
+    font-size: .88em;
+}
+code.Nm, code.Fl, code.Cm, code.Ic, code.In, code.Fd,
+code.Fn, code.Cd, code.Ev, code.Dv, code.Er, code.Li { font-weight: 600; }
+var.Ar, var.Fa, var.Va, var.Ft, span.Pa, span.Ad { font-style: italic; }
+b.Sy { font-weight: 600; }
+i.Em { font-style: italic; }
+
+pre {
+    font-family: var(--mono);
+    font-size: .82rem;
+    line-height: 1.55;
+    background: var(--wash);
+    border-left: 2px solid var(--sec);
+    padding: .9rem 1.1rem;
+    margin: 1.2rem 0;
+    overflow-x: auto;
+}
+
+dl.Bl-tag { margin: 1rem 0; }
+dl.Bl-tag > dt { margin-top: .9rem; font-weight: 400; }
+dl.Bl-tag > dd { margin-left: 2ch; }
+dl.Bl-diag > dt { font-weight: 600; }
+div.Bd-indent { margin-left: 2ch; }
+
+table.Nm > tbody > tr > td { vertical-align: text-top; }
+table.tbl { border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+table.tbl td, table.tbl th { padding: .25rem 1.2rem .25rem 0; }
+
+/* Cross references that live on another site. */
+a.Xr[href^="https://manpages.debian.org"] { border-bottom: 1px dotted var(--rule-hi); }
+
+ul.Bl-bullet { padding-left: 1.4rem; }
+ul.Bl-bullet li::marker { color: var(--rule-hi); }
+
+/* ------------------------------------------------------- section index list */
+
+.index {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0 0;
+}
+.index td {
+    padding: .45rem .8rem .45rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+}
+.index tr:hover td { background: var(--wash); }
+.index .nm {
+    font-family: var(--mono);
+    font-size: .88rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.index .nd { color: var(--ink-dim); font-size: .92rem; }
+.index td:last-child { padding-right: 0; }
+
+.lead {
+    color: var(--ink-dim);
+    max-width: 60ch;
+    margin: 0 0 1.5rem;
+}
+
+/* Root index: the section directory. */
+.dir { display: grid; gap: 0; margin: 1.5rem 0 0; }
+.dir a {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding: .9rem .6rem;
+    color: var(--ink);
+    border-top: 1px solid var(--rule);
+}
+.dir a:last-child { border-bottom: 1px solid var(--rule); }
+.dir a:hover { text-decoration: none; background: var(--wash); }
+.dir .n {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1;
+}
+.dir a[data-s="1"] .n { color: var(--sec-1); }
+.dir a[data-s="2"] .n { color: var(--sec-2); }
+.dir a[data-s="3"] .n { color: var(--sec-3); }
+.dir a[data-s="5"] .n { color: var(--sec-5); }
+.dir a[data-s="8"] .n { color: var(--sec-8); }
+.dir .t { font-weight: 600; }
+.dir .c { display: block; font-size: .85rem; color: var(--ink-dim); font-weight: 400; }
+
+h1.title {
+    font-family: var(--mono);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin: 0 0 .6rem;
+}
+
+/* ------------------------------------------------------------ page provenance */
+
+.src {
+    margin-top: 1.5rem;
+    font-size: .8rem;
+    color: var(--ink-dim);
+}
+.src a { color: var(--ink-dim); text-decoration: underline; text-decoration-color: var(--rule-hi); }
+.src a:hover { color: var(--sec); }
+
+/* ------------------------------------------------------------------- footer */
+
+.sitefoot {
     position: relative;
     z-index: 1;
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    padding-block: 1.5rem 3rem;
+    padding-inline: max(1rem, (100% - var(--band)) / 2);
+    color: var(--ink-dim);
+}
+.sitefoot nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: .8rem;
+    font-size: .82rem;
+}
+.sitefoot nav a { color: var(--ink); }
+.sitefoot p { margin: 0; max-width: 62ch; font-size: .82rem; }
+
+/* -------------------------------------------------------------------- print */
+
+@media print {
+    :root { color-scheme: light; }
+    .topbar, .sitefoot, .toc, .crumbs, .skip, .src { display: none; }
+    body::before { display: none; }
+    body { background: #fff; color: #000; }
+    .sheet { display: block; max-width: none; padding: 0; }
+    table.head { border-top: 2px solid #000; color: #000; }
+    table.head, table.foot { color: #000; }
+    pre { border-left: 2px solid #999; background: none; }
+    a { color: #000; text-decoration: none; }
+    a.Xr[href^="http"]::after, a.Lk::after {
+        content: " <" attr(href) ">";
+        font-size: .8em;
+        word-break: break-all;
+    }
 }
 
-#theme-toggle {
-    position: absolute;
-    top: 0.75em;
-    right: 0.75em;
-    background: none;
-    border: 1px solid var(--wrapper-border);
-    border-radius: 4px;
-    cursor: pointer;
-    color: var(--desc-color);
-    padding: 0.3em;
-    line-height: 0;
-}
-
-#theme-toggle:hover {
-    color: var(--body-color);
-    border-color: var(--accent);
-}
-
-#theme-toggle svg {
-    width: 1.1em;
-    height: 1.1em;
-}
-
-/* Light mode: show moon (click to go dark) */
-.icon-sun  { display: none; }
-.icon-moon { display: block; }
-
-/* Dark mode: show sun (click to go light) */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .icon-sun  { display: block; }
-    :root:not([data-theme="light"]) .icon-moon { display: none; }
-}
-:root[data-theme="dark"] .icon-sun  { display: block; }
-:root[data-theme="dark"] .icon-moon { display: none; }
-
-#right {
-    float: right;
-    width: 49%;
-}
-
-#left {
-    float: left;
-    width: 49%;
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

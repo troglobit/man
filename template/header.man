@@ -1,8 +1,0 @@
-.Dd $Mdocdate$
-.Dt %TITLE%
-.Os "Troglobit Software"
-.Sh NAME
-.Nm index
-.Nd UNIX manual pages
-.Sh %DESC%
-.Bl -bullet -offset indent -compact
