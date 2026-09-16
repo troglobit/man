@@ -27,7 +27,8 @@ A page that cannot be fetched fails the build rather than publishing blank.
 
 `bin/man.sh` then renders every page with mandoc and wraps it in
 `template/header.html` and `template/footer.html`.  It also writes the section
-indexes, the front page, `sitemap.xml`, `robots.txt` and `404.html`.  Page descriptions come from each page's own NAME
+indexes, the front page, `pages.json` for the search box, `sitemap.xml`,
+`robots.txt` and `404.html`.  Page descriptions come from each page's own NAME
 section, so nothing has to be written twice.
 
 Manual pages that are not carried here, but are referenced in a SEE ALSO, are

@@ -37,6 +37,14 @@
     </svg>
     <b>troglobit</b><span>/man</span>
   </a>
+  <form class="find" role="search" onsubmit="return false">
+    <input id="q" type="search" placeholder="Search manual pages"
+           aria-label="Search manual pages" role="combobox" aria-controls="results"
+           aria-expanded="false" aria-autocomplete="list"
+           autocomplete="off" autocorrect="off" spellcheck="false">
+    <kbd>/</kbd>
+    <ul id="results" role="listbox" aria-label="Search results" hidden></ul>
+  </form>
   <nav class="sections" aria-label="Manual sections">
     <a href="%PREFIX%man1/index.html" data-s="1" title="User commands">1</a>
     <a href="%PREFIX%man2/index.html" data-s="2" title="System calls">2</a>

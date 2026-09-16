@@ -304,7 +304,8 @@ cat >> "$TOP/index.html" <<'EOF'
 <article class="page">
 <h1 class="title">UNIX manual pages</h1>
 <p class="lead">The manual pages that ship with Joachim Wiberg's free software
-projects, rebuilt from each project's own sources.</p>
+projects, rebuilt from each project's own sources.  Pick a section, or search
+from the box above.</p>
 <nav class="dir">
 EOF
 
@@ -324,6 +325,32 @@ System V User's Manual</a>.</p>
 </article>
 EOF
 emit_foot "" >> "$TOP/index.html"
+
+###############################################################################
+# Search index
+###############################################################################
+
+echo "Updating pages.json ..."
+esc_json < "$META" | sort -t"$(printf '\t')" -k2,2 -k3,3 > "$WORK/meta.json"
+{
+	printf '['
+	awk -F'\t' '
+	{
+		if (NR > 1)
+			printf ","
+		printf "{\"u\":\"%s\",\"n\":\"%s\",\"s\":\"%s\",\"d\":\"%s\"", \
+		       $1, $2, $3, $4
+		if ($5 != "" && $5 != $2) {
+			n = split($5, a, /, */)
+			printf ",\"a\":["
+			for (i = 1; i <= n; i++)
+				printf "%s\"%s\"", (i > 1 ? "," : ""), a[i]
+			printf "]"
+		}
+		printf "}"
+	}' "$WORK/meta.json"
+	printf ']\n'
+} > "$TOP/pages.json"
 
 ###############################################################################
 # Cross references that point at pages this site does not carry
@@ -407,8 +434,8 @@ emit_head "Page not found" "That manual page is not on this site." \
 cat >> "$TOP/404.html" <<'EOF'
 <article class="page">
 <h1 class="title">No such manual page</h1>
-<p class="lead">Nothing is filed under that name here.  Browse the sections
-below.</p>
+<p class="lead">Nothing is filed under that name here.  Search from the box
+above, or browse a section.</p>
 <nav class="dir">
 EOF
 for sect in 1 2 3 5 8; do

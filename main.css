@@ -183,6 +183,107 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 :root[data-theme="dark"] .theme .i-auto   { display: none;  }
 :root[data-theme="dark"] .theme .i-dark   { display: block; }
 
+/* ------------------------------------------------------------------- search */
+
+.find {
+    position: relative;
+    flex: 1 1 22ch;
+    max-width: 34ch;
+    margin: 0;
+}
+
+.find input {
+    width: 100%;
+    font: inherit;
+    font-size: .85rem;
+    padding: .3rem 2.2rem .3rem .6rem;
+    color: var(--ink);
+    background: var(--wash);
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+.find input::placeholder { color: var(--ink-dim); }
+.find input:focus {
+    outline: none;
+    border-color: var(--sec);
+    background: var(--paper);
+}
+
+.find kbd {
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    transform: translateY(-50%);
+    font-family: var(--mono);
+    font-size: .7rem;
+    line-height: 1;
+    padding: .15rem .3rem;
+    color: var(--ink-dim);
+    border: 1px solid var(--rule-hi);
+    border-radius: 2px;
+    pointer-events: none;
+}
+.find input:focus ~ kbd, .find input:not(:placeholder-shown) ~ kbd { display: none; }
+
+#results {
+    position: absolute;
+    top: calc(100% + .4rem);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: .25rem 0;
+    list-style: none;
+    max-height: min(26rem, 70vh);
+    overflow-y: auto;
+    background: var(--paper);
+    border: 1px solid var(--rule-hi);
+    box-shadow: 0 6px 24px light-dark(rgba(40, 35, 25, .13), rgba(0, 0, 0, .5));
+}
+#results[hidden] { display: none; }
+
+#results li > a {
+    display: block;
+    padding: .3rem .6rem;
+    color: var(--ink);
+    line-height: 1.4;
+}
+#results li > a:hover { text-decoration: none; }
+#results li[aria-selected="true"] > a,
+#results li > a:hover { background: var(--wash); }
+
+#results .nm { font-family: var(--mono); font-size: .85rem; font-weight: 600; }
+#results .sc { font-family: var(--mono); font-size: .75rem; }
+#results .nd {
+    display: block;
+    font-size: .78rem;
+    color: var(--ink-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#results .none { padding: .5rem .6rem; font-size: .82rem; color: var(--ink-dim); }
+#results mark { background: none; color: var(--sec); font-weight: 600; }
+
+#results li[data-s="1"] .sc { color: var(--sec-1); }
+#results li[data-s="2"] .sc { color: var(--sec-2); }
+#results li[data-s="3"] .sc { color: var(--sec-3); }
+#results li[data-s="5"] .sc { color: var(--sec-5); }
+#results li[data-s="8"] .sc { color: var(--sec-8); }
+
+/* Narrow screens: the search box gets a row of its own rather than a sliver. */
+@media (max-width: 46rem) {
+    .topbar {
+        flex-wrap: wrap;
+        row-gap: .5rem;
+    }
+    .find {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: none;
+    }
+    .sections { margin-left: auto; }
+}
+
 /* ------------------------------------------------------------------- layout */
 
 .sheet {
