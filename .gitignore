@@ -1,4 +1,5 @@
 *~
+/.manifest
 index.html
 /man1/
 /man2/*.man
