@@ -13,7 +13,7 @@ Building
     make serve      build, then preview on http://localhost:8000
     make clean      remove everything generated
 
-Needs `mandoc`, `curl` and GNU make:
+Needs `mandoc`, `curl` and GNU make 4.3 or later:
 
     sudo apt install mandoc curl make
 
@@ -29,11 +29,15 @@ Pages are fetched conditionally, with the ETag kept in `.manifest`, and a
 page that comes back unchanged is left untouched.  `REPO` names one or more
 projects, by `project` or `org/project`, to fetch only those.
 
-`bin/man.sh` then renders every page with mandoc and wraps it in
-`template/header.html` and `template/footer.html`.  It also writes the section
-indexes, the front page, `pages.json` for the search box, `sitemap.xml`,
-`robots.txt` and `404.html`.  Page descriptions come from each page's own NAME
-section, so nothing has to be written twice.
+`bin/page.sh` renders one page with mandoc and wraps it in
+`template/header.html` and `template/footer.html`.  `bin/site.sh` then writes
+the section indexes, the front page, `pages.json` for the search box,
+`sitemap.xml`, `robots.txt` and `404.html`.  Page descriptions come from each
+page's own NAME section, so nothing has to be written twice.
+
+Only pages whose source, template or script changed are rendered again, so
+`make` after a fetch only re-renders what the fetch changed.  `make -j`
+renders pages in parallel.
 
 Manual pages that are not carried here, but are referenced in a SEE ALSO, are
 repointed at manpages.debian.org.  `BASEURL` overrides the canonical site URL,

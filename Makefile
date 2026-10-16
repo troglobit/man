@@ -9,24 +9,45 @@
 REPORC  = $(CURDIR)/reporc
 PORT   ?= 8000
 
-GENERATED = index.html 404.html pages.json sitemap.xml robots.txt .manifest
+EXT    := $(patsubst ext/%,%,$(wildcard ext/man[12358]/*.[12358]))
+SRC    := $(sort $(wildcard man[12358]/*.[12358]) $(EXT))
+HTML   := $(SRC:=.html)
+DIRS   := $(patsubst %/,%,$(sort $(dir $(SRC))))
+SITE   := index.html 404.html pages.json sitemap.xml robots.txt \
+	  $(addsuffix /index.html,$(DIRS))
+TMPL   := template/header.html template/footer.html bin/lib.sh
 
-all: fetch build
+all: fetch
+	@$(MAKE) --no-print-directory build
 
 fetch:
 	./bin/fetch.sh $(REPORC) $(REPO)
 
-build:
-	cp -a ext/* .
-	./bin/man.sh
+build: $(SITE)
 
 serve: build
 	@echo "Serving $(CURDIR) on http://localhost:$(PORT)/ -- ^C to stop"
 	@python3 -m http.server $(PORT) --bind 127.0.0.1
 
 clean:
-	rm -rf man1 man3 man5 man8
-	rm -f man2/*.html
-	rm -f $(GENERATED)
+	rm -rf $(DIRS) $(SITE) .manifest .pages
 
-.PHONY: all fetch build serve clean
+# Third party pages are kept in ext/ and copied in before the build.
+$(EXT): %: ext/%
+	@mkdir -p $(@D)
+	cp $< $@
+
+# A cross reference is repointed when its page is missing here, and the
+# provenance line comes from reporc, so every page follows both.
+$(HTML): %.html: % bin/page.sh $(TMPL) reporc .pages | $(SRC)
+	./bin/page.sh $< $@
+
+$(SITE) &: $(HTML) .pages bin/site.sh $(TMPL)
+	./bin/site.sh
+
+# The set of pages, written only when it changes.
+.pages: FORCE
+	@echo $(SRC) | cmp -s - $@ || echo $(SRC) > $@
+
+FORCE:
+.PHONY: all fetch build serve clean FORCE
