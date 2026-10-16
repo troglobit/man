@@ -8,13 +8,14 @@ Building
 --------
 
     make            fetch the sources and build the site
+    make REPO=kg    fetch only the pages of one project, then build
     make build      rebuild from the sources already fetched
     make serve      build, then preview on http://localhost:8000
     make clean      remove everything generated
 
-Needs `mandoc`, `wget` and GNU make:
+Needs `mandoc`, `curl` and GNU make:
 
-    sudo apt install mandoc wget make
+    sudo apt install mandoc curl make
 
 `bin/fetch.sh` reads `reporc` and pulls each manual page straight from its
 project.  An entry is
@@ -24,6 +25,9 @@ project.  An entry is
 where `org` defaults to `troglobit`, `branch` to `master` with a fall back to
 `main`, and `path` is the directory inside the repository, or `.` for the root.
 A page that cannot be fetched fails the build rather than publishing blank.
+Pages are fetched conditionally, with the ETag kept in `.manifest`, and a
+page that comes back unchanged is left untouched.  `REPO` names one or more
+projects, by `project` or `org/project`, to fetch only those.
 
 `bin/man.sh` then renders every page with mandoc and wraps it in
 `template/header.html` and `template/footer.html`.  It also writes the section

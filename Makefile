@@ -1,6 +1,7 @@
 # man.troglobit.com
 #
 #   make          fetch sources and build the site
+#   make REPO=kg  fetch only one project, then build
 #   make build    rebuild from the sources already fetched
 #   make serve    build, then preview on http://localhost:8000
 #   make clean    remove everything generated
@@ -13,7 +14,7 @@ GENERATED = index.html 404.html pages.json sitemap.xml robots.txt .manifest
 all: fetch build
 
 fetch:
-	./bin/fetch.sh $(REPORC)
+	./bin/fetch.sh $(REPORC) $(REPO)
 
 build:
 	cp -a ext/* .

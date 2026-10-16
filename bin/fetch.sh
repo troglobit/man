@@ -1,21 +1,32 @@
 #!/bin/sh
 # Fetch upstream manual page sources listed in a reporc file.
 #
-# A miss used to leave a zero byte file behind, which mandoc happily turned
-# into a blank published page, so every fetch is now staged and verified
-# before it replaces anything.
+# Every fetch is staged and verified before it replaces anything, since
+# mandoc turns an empty file into a blank published page.  A page that
+# comes back unchanged is left alone, so its mtime still tells make what
+# needs rebuilding.
+#
+# Project names after the reporc file limit the fetch to those projects.
 
 set -u
 
 RC=${1:-}
 if [ -z "$RC" ]; then
-	echo "usage: fetch.sh /path/to/reporc" >&2
+	echo "usage: fetch.sh /path/to/reporc [project ...]" >&2
 	exit 1
 fi
 if [ ! -r "$RC" ]; then
 	echo "fetch.sh: cannot read $RC" >&2
 	exit 1
 fi
+shift
+ONLY=$*
+
+# The dot command looks a bare name up in PATH.
+case $RC in
+	/*) ;;
+	*)  RC=$PWD/$RC ;;
+esac
 
 TOP=$(git rev-parse --show-toplevel)
 WORK=$(mktemp -d)
@@ -25,6 +36,9 @@ trap 'rm -rf "$WORK"' EXIT INT TERM
 
 : > "$WORK/manifest"
 : > "$WORK/failed"
+: > "$WORK/changed"
+: > "$WORK/seen"
+[ -f "$MANIFEST" ] || : > "$MANIFEST"
 
 jobs=0
 
@@ -36,29 +50,57 @@ raw()
 	esac
 }
 
+# Download $1 to $2, unless the ETag $3 still holds.  Prints the ETag on
+# a download and nothing on a match.
+download()
+{
+	url=$1 tmp=$2 etag=$3
+
+	if [ -n "$etag" ]; then
+		set -- -H "If-None-Match: $etag"
+	else
+		set --
+	fi
+
+	code=$(curl -s "$@" -o "$tmp" -D "$tmp.hdr" -w '%{http_code}' "$url") || return 1
+	case $code in
+		200) [ -s "$tmp" ] && sed -n 's/^etag: *//Ip' "$tmp.hdr" | tr -d '\r' ;;
+		304) ;;
+		*)   return 1 ;;
+	esac
+}
+
 get()
 {
 	org=$1 proj=$2 branch=$3 path=$4 file=$5
 	subd=man"${file##*.}"
+	rel=$subd/$file
+	dst=$TOP/$rel
 	tmp=$WORK/$subd.$file
+	etag=$(awk -F'\t' -v f="$rel" '$1 == f { print $5; exit }' "$MANIFEST")
+	[ -s "$dst" ] || etag=
 
-	if ! wget -q -O "$tmp" "$(raw "$org" "$proj" "$branch" "$path" "$file")" ||
-	   [ ! -s "$tmp" ]; then
+	if ! new=$(download "$(raw "$org" "$proj" "$branch" "$path" "$file")" "$tmp" "$etag"); then
 		# Plenty of projects have moved off master by now.
 		if [ "$branch" = master ] &&
-		   wget -q -O "$tmp" "$(raw "$org" "$proj" main "$path" "$file")" &&
-		   [ -s "$tmp" ]; then
+		   new=$(download "$(raw "$org" "$proj" main "$path" "$file")" "$tmp" "$etag"); then
 			branch=main
 		else
-			rm -f "$tmp"
 			echo "$org/$proj $path/$file" >> "$WORK/failed"
 			return 1
 		fi
 	fi
 
-	mkdir -p "$TOP/$subd"
-	mv "$tmp" "$TOP/$subd/$file"
-	echo "$subd/$file	$org/$proj	$branch	$path" >> "$WORK/manifest"
+	if [ -n "$new" ]; then
+		etag=$new
+		mkdir -p "$TOP/$subd"
+		if ! cmp -s "$tmp" "$dst"; then
+			mv "$tmp" "$dst"
+			echo "$rel" >> "$WORK/changed"
+		fi
+	fi
+
+	echo "$rel	$org/$proj	$branch	$path	$etag" >> "$WORK/manifest"
 }
 
 repo()
@@ -77,6 +119,12 @@ repo()
 		*)   org=troglobit;     proj="$spec"       ;;
 	esac
 
+	case " $ONLY " in
+		"  "|*" $proj "*|*" $org/$proj "*) ;;
+		*) return ;;
+	esac
+
+	echo "$org/$proj" >> "$WORK/seen"
 	echo "Fetching $org/$proj ..."
 
 	for file in "$@"; do
@@ -93,7 +141,10 @@ repo()
 . "$RC"
 wait
 
-sort -o "$MANIFEST" "$WORK/manifest"
+if [ ! -s "$WORK/seen" ]; then
+	echo "fetch.sh: no project matching '$ONLY' in $RC" >&2
+	exit 1
+fi
 
 if [ -s "$WORK/failed" ]; then
 	echo >&2
@@ -104,4 +155,9 @@ if [ -s "$WORK/failed" ]; then
 	exit 1
 fi
 
-echo "Fetched $(wc -l < "$MANIFEST") manual pages."
+# Projects not fetched this run keep their old entries.
+awk -F'\t' 'NR == FNR { seen[$1]; next } !($2 in seen)' "$WORK/seen" "$MANIFEST" \
+	>> "$WORK/manifest"
+sort -o "$MANIFEST" "$WORK/manifest"
+
+echo "Fetched $(wc -l < "$MANIFEST") manual pages, $(wc -l < "$WORK/changed") changed."
