@@ -38,6 +38,7 @@ trap 'rm -rf "$WORK"' EXIT INT TERM
 : > "$WORK/failed"
 : > "$WORK/changed"
 : > "$WORK/seen"
+: > "$WORK/kept"
 [ -f "$MANIFEST" ] || : > "$MANIFEST"
 
 jobs=0
@@ -121,7 +122,7 @@ repo()
 
 	case " $ONLY " in
 		"  "|*" $proj "*|*" $org/$proj "*) ;;
-		*) return ;;
+		*) echo "$org/$proj" >> "$WORK/kept"; return ;;
 	esac
 
 	echo "$org/$proj" >> "$WORK/seen"
@@ -155,9 +156,21 @@ if [ -s "$WORK/failed" ]; then
 	exit 1
 fi
 
-# Projects not fetched this run keep their old entries.
-awk -F'\t' 'NR == FNR { seen[$1]; next } !($2 in seen)' "$WORK/seen" "$MANIFEST" \
+# Listed projects skipped by the filter keep their old entries.
+awk -F'\t' 'FILENAME == ARGV[1] { kept[$1]; next } $2 in kept' "$WORK/kept" "$MANIFEST" \
 	>> "$WORK/manifest"
 sort -o "$MANIFEST" "$WORK/manifest"
+
+# Pages dropped from reporc go too, with what was rendered from them.
+for src in "$TOP"/man[12358]/*.[12358]; do
+	[ -e "$src" ] || continue
+	rel=${src#"$TOP"/}
+	[ -e "$TOP/ext/$rel" ] || echo "$rel"
+done |
+awk -F'\t' 'FILENAME == ARGV[1] { keep[$1]; next } !($0 in keep)' "$MANIFEST" - |
+while read -r rel; do
+	echo "Dropping $rel ..."
+	rm -f "$TOP/$rel" "$TOP/$rel.html"
+done
 
 echo "Fetched $(wc -l < "$MANIFEST") manual pages, $(wc -l < "$WORK/changed") changed."

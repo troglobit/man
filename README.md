@@ -26,8 +26,9 @@ where `org` defaults to `troglobit`, `branch` to `master` with a fall back to
 `main`, and `path` is the directory inside the repository, or `.` for the root.
 A page that cannot be fetched fails the build rather than publishing blank.
 Pages are fetched conditionally, with the ETag kept in `.manifest`, and a
-page that comes back unchanged is left untouched.  `REPO` names one or more
-projects, by `project` or `org/project`, to fetch only those.
+page that comes back unchanged is left untouched.  A page dropped from
+`reporc` is removed on the next fetch.  `REPO` names one or more projects,
+by `project` or `org/project`, to fetch only those.
 
 `bin/page.sh` renders one page with mandoc and wraps it in
 `template/header.html` and `template/footer.html`.  `bin/site.sh` then writes
